@@ -1,0 +1,1 @@
+{"version":"0.2.0","configurations":[{"name":"TP0 - Chrome","request":"launch","type":"dart","deviceId":"chrome","program":"lib/main.dart"}]}
