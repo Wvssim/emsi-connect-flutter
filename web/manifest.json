@@ -1,11 +1,11 @@
 {
-    "name": "trying_flutter",
-    "short_name": "trying_flutter",
+    "name": "EMSI Connect",
+    "short_name": "EMSI Connect",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Application Flutter centralisant les services et informations de l'espace étudiant EMSI.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

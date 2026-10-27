@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('La page d\'accueil affiche tous les éléments du TP1', (
+  testWidgets('La page d\'accueil affiche les éléments principaux', (
     tester,
   ) async {
     await tester.pumpWidget(const MyApp());
@@ -23,7 +23,9 @@ void main() {
     await tester.tap(find.byType(FloatingActionButton));
   });
 
-  testWidgets('La page profil affiche les informations du TP2', (tester) async {
+  testWidgets('La page profil affiche les informations de l\'étudiant', (
+    tester,
+  ) async {
     await tester.pumpWidget(const MaterialApp(home: ProfilePage()));
 
     expect(find.text('Mon profil'), findsOneWidget);
