@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
             Image.asset(
-              'assets/images/emsi.jpg',
+              'assets/images/campus.jpg',
               height: 160,
               fit: BoxFit.cover,
             ),
@@ -40,64 +40,80 @@ class HomePage extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  width: 140,
-                  height: 100,
-                  color: Colors.green.shade50,
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.menu_book),
-                      SizedBox(height: 8),
-                      Text('Mes cours'),
-                    ],
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade50,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.blue.shade100),
+                    ),
+                    child: const Column(
+                      children: [
+                        Icon(Icons.menu_book),
+                        SizedBox(height: 8),
+                        Text('Mes cours'),
+                      ],
+                    ),
                   ),
                 ),
-                Container(
-                  width: 140,
-                  height: 100,
-                  color: Colors.green.shade50,
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.calendar_month),
-                      SizedBox(height: 8),
-                      Text('Planning'),
-                    ],
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade50,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.blue.shade100),
+                    ),
+                    child: const Column(
+                      children: [
+                        Icon(Icons.calendar_month),
+                        SizedBox(height: 8),
+                        Text('Planning'),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 12),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  width: 140,
-                  height: 100,
-                  color: Colors.green.shade50,
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.person),
-                      SizedBox(height: 8),
-                      Text('Mon profil'),
-                    ],
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade50,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.blue.shade100),
+                    ),
+                    child: const Column(
+                      children: [
+                        Icon(Icons.person),
+                        SizedBox(height: 8),
+                        Text('Mon profil'),
+                      ],
+                    ),
                   ),
                 ),
-                Container(
-                  width: 140,
-                  height: 100,
-                  color: Colors.green.shade50,
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.task_alt),
-                      SizedBox(height: 8),
-                      Text('Mes tâches'),
-                    ],
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade50,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.blue.shade100),
+                    ),
+                    child: const Column(
+                      children: [
+                        Icon(Icons.task_alt),
+                        SizedBox(height: 8),
+                        Text('Mes tâches'),
+                      ],
+                    ),
                   ),
                 ),
               ],

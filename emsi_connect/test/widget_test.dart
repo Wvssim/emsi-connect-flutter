@@ -1,4 +1,5 @@
 import 'package:emsi_connect/main.dart';
+import 'package:emsi_connect/screens/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -20,5 +21,16 @@ void main() {
 
     await tester.tap(find.byIcon(Icons.notifications));
     await tester.tap(find.byType(FloatingActionButton));
+  });
+
+  testWidgets('La page profil affiche les informations du TP2', (tester) async {
+    await tester.pumpWidget(const MaterialApp(home: ProfilePage()));
+
+    expect(find.text('Mon profil'), findsOneWidget);
+    expect(find.byIcon(Icons.person), findsOneWidget);
+    expect(find.text('Nom : Sara El Amrani'), findsOneWidget);
+    expect(find.text('Filière : Informatique'), findsOneWidget);
+    expect(find.text('Niveau : S5'), findsOneWidget);
+    expect(find.text('Email : sara@example.com'), findsOneWidget);
   });
 }
