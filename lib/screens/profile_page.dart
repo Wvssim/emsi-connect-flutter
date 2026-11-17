@@ -18,17 +18,31 @@ class _ProfilePageState extends State<ProfilePage> {
   static const _academicYear = '2026–2027';
   static const _studentNumber = 'EMSI-2026-001';
 
-  Widget _buildInformation(IconData icon, String text) => Container(
-    width: double.infinity,
-    padding: const EdgeInsets.all(12),
-    child: Row(
-      children: [
-        Icon(icon),
-        const SizedBox(width: 12),
-        Expanded(child: Text(text)),
-      ],
-    ),
-  );
+  Widget _buildInformation(IconData icon, String text) {
+    final colors = Theme.of(context).colorScheme;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: colors.primaryContainer,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colors.outlineVariant),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: colors.onPrimaryContainer),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(color: colors.onPrimaryContainer),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   // Bonus : le nom est modifiable via une boîte de dialogue et se répercute
   // partout où il est affiché sur cette page.
@@ -56,153 +70,161 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Mon profil')),
-    body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              height: 150,
-              child: Stack(
-                children: [
-                  Container(
-                    height: 110,
-                    decoration: BoxDecoration(
-                      color: Colors.green.shade100,
-                      borderRadius: BorderRadius.circular(12),
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Mon profil')),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 150,
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 110,
+                      decoration: BoxDecoration(
+                        color: colors.primaryContainer,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                  ),
-                  const Align(
-                    alignment: Alignment.bottomCenter,
-                    child: CircleAvatar(
-                      radius: 45,
-                      backgroundImage: AssetImage('assets/images/profile.jpg'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Informations personnelles',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-            _buildInformation(Icons.person, 'Nom : $_studentName'),
-            const SizedBox(height: 8),
-            _buildInformation(Icons.school, 'Filière : $_program'),
-            const SizedBox(height: 8),
-            _buildInformation(Icons.grade, 'Niveau : $_level'),
-            const SizedBox(height: 8),
-            _buildInformation(Icons.email, 'Email : $_email'),
-            const SizedBox(height: 8),
-            _buildInformation(
-              Icons.calendar_today,
-              'Année universitaire : $_academicYear',
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () => debugPrint('Modifier le profil'),
-                    child: const Text('Modifier le profil'),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () => debugPrint('Contacter'),
-                    child: const Text('Contacter'),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _modifierNom,
-                    child: const Text('Modifier le nom'),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _voirLesDetails,
-                    child: const Text('Voir les détails'),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.green.shade50,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.green.shade200),
-              ),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Icon(
-                      Icons.account_balance,
-                      color: Colors.green.shade700,
-                      size: 32,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      const CircleAvatar(
-                        radius: 36,
+                    const Align(
+                      alignment: Alignment.bottomCenter,
+                      child: CircleAvatar(
+                        radius: 45,
                         backgroundImage: AssetImage(
                           'assets/images/profile.jpg',
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(right: 36),
-                              child: Text(
-                                'Étudiante EMSI',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(_studentName),
-                            const SizedBox(height: 4),
-                            const Text('$_program - $_level'),
-                            const SizedBox(height: 4),
-                            Text(
-                              'N° étudiant : $_studentNumber',
-                              style: TextStyle(color: Colors.grey.shade700),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Informations personnelles',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
+              _buildInformation(Icons.person, 'Nom : $_studentName'),
+              const SizedBox(height: 8),
+              _buildInformation(Icons.school, 'Filière : $_program'),
+              const SizedBox(height: 8),
+              _buildInformation(Icons.grade, 'Niveau : $_level'),
+              const SizedBox(height: 8),
+              _buildInformation(Icons.email, 'Email : $_email'),
+              const SizedBox(height: 8),
+              _buildInformation(
+                Icons.calendar_today,
+                'Année universitaire : $_academicYear',
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => debugPrint('Modifier le profil'),
+                      child: const Text('Modifier le profil'),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => debugPrint('Contacter'),
+                      child: const Text('Contacter'),
+                    ),
                   ),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _modifierNom,
+                      child: const Text('Modifier le nom'),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _voirLesDetails,
+                      child: const Text('Voir les détails'),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: colors.primaryContainer,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: colors.outlineVariant),
+                ),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Icon(
+                        Icons.account_balance,
+                        color: colors.onPrimaryContainer,
+                        size: 32,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        const CircleAvatar(
+                          radius: 36,
+                          backgroundImage: AssetImage(
+                            'assets/images/profile.jpg',
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(right: 36),
+                                child: Text(
+                                  'Étudiante EMSI',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(_studentName),
+                              const SizedBox(height: 4),
+                              const Text('$_program - $_level'),
+                              const SizedBox(height: 4),
+                              Text(
+                                'N° étudiant : $_studentNumber',
+                                style: TextStyle(
+                                  color: colors.onSurfaceVariant,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class _EditNameDialog extends StatefulWidget {
