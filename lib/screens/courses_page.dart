@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'login_page.dart';
-
 class CoursesPage extends StatelessWidget {
   const CoursesPage({super.key});
 
+  static const Color couleurPrincipale = Color(0xFF00796B);
+
   @override
   Widget build(BuildContext context) {
-    final modules = [
+    final modules = <Map<String, Object>>[
       {
         'nom': 'Développement Multi-Plateforme',
         'enseignant': 'Mme Aouraghe',
@@ -15,70 +15,129 @@ class CoursesPage extends StatelessWidget {
       },
       {
         'nom': 'Bases de données avancées',
-        'enseignant': 'M. Bennani',
-        'heures': 28,
+        'enseignant': 'M. Exemple',
+        'heures': 40,
       },
       {
-        'nom': 'Réseaux informatiques',
+        'nom': 'Génie logiciel',
+        'enseignant': 'Mme Exemple',
+        'heures': 36,
+      },
+      {
+        'nom': 'Cloud Computing',
         'enseignant': 'M. Exemple',
-        'heures': 24,
+        'heures': 32,
       },
       {
         'nom': 'Intelligence artificielle',
-        'enseignant': 'Mme Idrissi',
+        'enseignant': 'Mme Exemple',
+        'heures': 40,
+      },
+      {
+        'nom': 'Sécurité informatique',
+        'enseignant': 'M. Exemple',
         'heures': 30,
       },
-      {'nom': 'Cybersécurité', 'enseignant': 'M. Alaoui', 'heures': 26},
-      {'nom': 'Gestion de projet', 'enseignant': 'Mme Tazi', 'heures': 20},
-      {'nom': 'Cloud computing', 'enseignant': 'M. Chraibi', 'heures': 24},
-      {'nom': 'Génie logiciel', 'enseignant': 'Mme Berrada', 'heures': 28},
+      {
+        'nom': 'Réseaux informatiques',
+        'enseignant': 'Mme Exemple',
+        'heures': 36,
+      },
+      {
+        'nom': 'Gestion de projet',
+        'enseignant': 'M. Exemple',
+        'heures': 24,
+      },
     ];
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mes cours'),
-        actions: [
-          IconButton(
-            tooltip: 'Connexion',
-            icon: const Icon(Icons.login),
-            onPressed: () =>
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => const LoginPage())),
-          ),
-        ],
+        backgroundColor: couleurPrincipale,
+        foregroundColor: Colors.white,
+        centerTitle: true,
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: modules.length,
-        itemBuilder: (context, index) {
-          final module = modules[index];
-          return Card(
-            elevation: 2,
-            margin: const EdgeInsets.only(bottom: 12),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(16),
+            child: Text(
+              'Modules du semestre',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            child: ListTile(
-              leading: CircleAvatar(child: Text('${index + 1}')),
-              title: Text(
-                '${module['nom']}',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              subtitle: Text(
-                'Enseignant : ${module['enseignant']} - ${module['heures']} h',
-              ),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Module sélectionné : ${module['nom']}'),
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              itemCount: modules.length,
+              itemBuilder: (context, index) {
+                final module = modules[index];
+                final nom = module['nom'] as String;
+                final enseignant = module['enseignant'] as String;
+                final heures = module['heures'] as int;
+
+                return Card(
+                  elevation: 2,
+                  margin: const EdgeInsets.only(bottom: 12),
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+                    horizontalTitleGap: 12,
+                    leading: CircleAvatar(
+                      radius: 18,
+                      backgroundColor: couleurPrincipale,
+                      foregroundColor: Colors.white,
+                      child: Text('${index + 1}'),
+                    ),
+                    title: Text(
+                      nom,
+                      softWrap: true,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: Text(
+                        'Enseignant : $enseignant\n'
+                        'Volume horaire : $heures heures',
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ),
+                    isThreeLine: true,
+                    trailing: const Icon(
+                      Icons.chevron_right,
+                      color: couleurPrincipale,
+                      size: 20,
+                    ),
+                    onTap: () {
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Module sélectionné : $nom',
+                            ),
+                          ),
+                        );
+                    },
                   ),
                 );
               },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }

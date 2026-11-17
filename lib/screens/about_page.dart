@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Écran « À propos » : informations statiques sur l'application (bonus).
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
 
@@ -9,7 +8,12 @@ class AboutPage extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('À propos')),
+      appBar: AppBar(
+        title: const Text('À propos'),
+        backgroundColor: colors.primary,
+        foregroundColor: colors.onPrimary,
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -22,7 +26,11 @@ class AboutPage extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.school, size: 72, color: colors.primary),
+                      Icon(
+                        Icons.school,
+                        size: 72,
+                        color: colors.primary,
+                      ),
                       const SizedBox(height: 16),
                       const Text(
                         'EMSI Connect',
@@ -37,14 +45,16 @@ class AboutPage extends StatelessWidget {
                       const SizedBox(height: 16),
                       const Text(
                         'Application réalisée dans le cadre des TP Flutter. '
-                        'Elle permet de consulter les cours, le profil '
-                        'étudiant et les paramètres. La connexion est '
-                        'simulée par une validation locale.',
+                        'Elle permet de consulter les cours, '
+                        'le profil étudiant et les paramètres. '
+                        'La connexion est simulée par une validation locale.',
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 24),
                       ElevatedButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                         child: const Text('Retour'),
                       ),
                     ],

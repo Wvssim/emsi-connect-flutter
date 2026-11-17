@@ -18,8 +18,8 @@ L’application propose un parcours complet : connexion et inscription avec vali
 - Présentation des cours, du planning, du profil et des tâches.
 - Écran de profil avec les informations de l’étudiant, nom modifiable et carte étudiant responsive.
 - Page de détails étudiant et page « à propos ».
-- Page de paramètres (notifications, mode compact, bascule du thème).
-- Bascule de thème clair/sombre partagée par toute l’application (bonus).
+- Page de paramètres (notifications, mode compact).
+- Bascule de thème clair/sombre (couleur de base verte, ColorScheme Material 3).
 - Interface Material Design compatible avec les écrans mobiles et le Web.
 
 ## Technologies
@@ -44,20 +44,15 @@ lib/
     register_page.dart
     settings_page.dart
     student_details_page.dart
-  theme/
-    theme_controller.dart
   utils/
     validators.dart
-  widgets/
-    theme_toggle_button.dart
 test/
   widget_test.dart
-  tp4_formulaires_test.dart
 web/
 pubspec.yaml
 ```
 
-`main.dart` initialise l’application et démarre sur l’écran de connexion. Les écrans sont isolés dans `lib/screens`, les validateurs de formulaire dans `lib/utils`, et le thème global (clair/sombre) dans `lib/theme`.
+`main.dart` initialise l’application et démarre sur l’écran de connexion. Les écrans sont isolés dans `lib/screens`, et les validateurs de formulaire dans `lib/utils`.
 
 ## Installation
 

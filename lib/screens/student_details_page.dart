@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 
-/// Écran de détail étudiant, ouvert depuis ProfilePage (bonus).
 class StudentDetailsPage extends StatelessWidget {
+  final String studentName;
+  final String program;
+
   const StudentDetailsPage({
     super.key,
     required this.studentName,
     required this.program,
   });
 
-  final String studentName;
-  final String program;
-
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Détails étudiant')),
+      appBar: AppBar(
+        title: const Text('Détails étudiant'),
+        backgroundColor: colors.primary,
+        foregroundColor: colors.onPrimary,
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -44,10 +48,15 @@ class StudentDetailsPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Text(program, textAlign: TextAlign.center),
+                      Text(
+                        program,
+                        textAlign: TextAlign.center,
+                      ),
                       const SizedBox(height: 24),
                       ElevatedButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                         child: const Text('Retour'),
                       ),
                     ],

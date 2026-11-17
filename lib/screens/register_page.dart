@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import '../utils/validators.dart';
 
-/// Écran d'inscription (validation locale uniquement, aucun compte n'est créé).
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -16,134 +13,208 @@ class _RegisterPageState extends State<RegisterPage> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _descriptionController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _confirmController = TextEditingController();
+  final _confirmationController = TextEditingController();
+
   bool _showPassword = false;
+  bool _showConfirmation = false;
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
+    _descriptionController.dispose();
     _passwordController.dispose();
-    _confirmController.dispose();
+    _confirmationController.dispose();
     super.dispose();
   }
 
-  void _creerCompte() {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Formulaire valide — compte non créé')),
-      );
-    }
-  }
-
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Inscription')),
-    body: SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 420),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextFormField(
-                    controller: _nameController,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: const InputDecoration(
-                      labelText: 'Nom complet',
-                      prefixIcon: Icon(Icons.person_outline),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Inscription'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 420),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextFormField(
+                      controller: _nameController,
+                      textCapitalization: TextCapitalization.words,
+                      decoration: const InputDecoration(
+                        labelText: 'Nom complet',
+                        prefixIcon: Icon(Icons.person_outline),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Nom complet obligatoire';
+                        }
+
+                        return null;
+                      },
                     ),
-                    validator: validateFullName,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: 'Adresse email',
-                      hintText: 'exemple@emsi.ma',
-                      prefixIcon: Icon(Icons.email_outlined),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: 'Adresse email',
+                        hintText: 'exemple@emsi.ma',
+                        prefixIcon: Icon(Icons.email_outlined),
+                      ),
+                      validator: validateEmail,
                     ),
-                    validator: validateEmail,
-                  ),
-                  const SizedBox(height: 16),
-                  // Bonus : téléphone avec clavier numérique et validation simple.
-                  TextFormField(
-                    controller: _phoneController,
-                    keyboardType: TextInputType.phone,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(10),
-                    ],
-                    decoration: const InputDecoration(
-                      labelText: 'Téléphone',
-                      hintText: '0612345678',
-                      prefixIcon: Icon(Icons.phone_outlined),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _phoneController,
+                      keyboardType: TextInputType.phone,
+                      decoration: const InputDecoration(
+                        labelText: 'Téléphone',
+                        hintText: '0612345678',
+                        prefixIcon: Icon(Icons.phone_outlined),
+                        errorMaxLines: 2,
+                      ),
+                      validator: (value) {
+                        final phone = (value ?? '').trim();
+
+                        if (phone.isEmpty) {
+                          return 'Téléphone obligatoire';
+                        }
+
+                        if (!RegExp(r'^[0-9]{10}$').hasMatch(phone)) {
+                          return 'Saisissez exactement 10 chiffres';
+                        }
+
+                        return null;
+                      },
                     ),
-                    validator: validatePhone,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: !_showPassword,
-                    decoration: InputDecoration(
-                      labelText: 'Mot de passe',
-                      prefixIcon: const Icon(Icons.lock_outline),
-                      suffixIcon: IconButton(
-                        tooltip: _showPassword
-                            ? 'Masquer le mot de passe'
-                            : 'Afficher le mot de passe',
-                        icon: Icon(
-                          _showPassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          setState(() => _showPassword = !_showPassword);
-                        },
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _descriptionController,
+                      keyboardType: TextInputType.multiline,
+                      minLines: 3,
+                      maxLines: 5,
+                      maxLength: 200,
+                      decoration: const InputDecoration(
+                        labelText: 'Description (facultative)',
+                        hintText: 'Présentez-vous en quelques mots',
+                        prefixIcon: Icon(Icons.description_outlined),
+                        alignLabelWithHint: true,
                       ),
                     ),
-                    validator: validatePassword,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _confirmController,
-                    obscureText: !_showPassword,
-                    decoration: const InputDecoration(
-                      labelText: 'Confirmer le mot de passe',
-                      prefixIcon: Icon(Icons.lock_reset),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: !_showPassword,
+                      autocorrect: false,
+                      enableSuggestions: false,
+                      decoration: InputDecoration(
+                        labelText: 'Mot de passe',
+                        prefixIcon: const Icon(Icons.lock_outline),
+                        suffixIcon: IconButton(
+                          tooltip: _showPassword
+                              ? 'Masquer le mot de passe'
+                              : 'Afficher le mot de passe',
+                          icon: Icon(
+                            _showPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _showPassword = !_showPassword;
+                            });
+                          },
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Mot de passe obligatoire';
+                        }
+
+                        if (value.length < 8) {
+                          return 'Au moins 8 caractères';
+                        }
+
+                        return null;
+                      },
                     ),
-                    validator: (value) =>
-                        validateConfirmation(value, _passwordController.text),
-                  ),
-                  const SizedBox(height: 16),
-                  // Bonus : compteur de caractères (affiché automatiquement par maxLength).
-                  TextFormField(
-                    maxLength: 120,
-                    maxLines: 3,
-                    decoration: const InputDecoration(
-                      labelText: 'Description (facultatif)',
-                      hintText: 'Quelques mots sur vous',
-                      prefixIcon: Icon(Icons.notes),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _confirmationController,
+                      obscureText: !_showConfirmation,
+                      autocorrect: false,
+                      enableSuggestions: false,
+                      decoration: InputDecoration(
+                        labelText: 'Confirmer le mot de passe',
+                        prefixIcon: const Icon(Icons.lock_reset),
+                        errorMaxLines: 3,
+                        suffixIcon: IconButton(
+                          tooltip: _showConfirmation
+                              ? 'Masquer la confirmation'
+                              : 'Afficher la confirmation',
+                          icon: Icon(
+                            _showConfirmation
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _showConfirmation = !_showConfirmation;
+                            });
+                          },
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Confirmez votre mot de passe';
+                        }
+
+                        if (value != _passwordController.text) {
+                          return 'Les mots de passe ne correspondent pas';
+                        }
+
+                        return null;
+                      },
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: _creerCompte,
-                    child: const Text('Créer mon compte'),
-                  ),
-                ],
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context)
+                            .hideCurrentSnackBar();
+
+                        if (_formKey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Formulaire valide — compte non créé',
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      child: const Text('Créer mon compte'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

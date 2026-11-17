@@ -1,68 +1,116 @@
 import 'package:flutter/material.dart';
-
 import 'screens/login_page.dart';
-import 'theme/theme_controller.dart';
-import 'widgets/theme_toggle_button.dart';
 
-/// Couleur de départ du thème Material 3.
-/// Pour tester (Partie 5, étape 17), remplacer par Colors.green et relancer.
-const Color seedColor = Colors.indigo;
-
-void main() => runApp(const MyApp());
-
-/// Thème commun à toute l'application, déclaré une seule fois ici.
-ThemeData _buildTheme(Brightness brightness) {
-  final colorScheme = ColorScheme.fromSeed(
-    seedColor: seedColor,
-    brightness: brightness,
-  );
-  return ThemeData(
-    useMaterial3: true,
-    colorScheme: colorScheme,
-    inputDecorationTheme: InputDecorationTheme(
-      border: const OutlineInputBorder(),
-      filled: true,
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size.fromHeight(48),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-    ),
-  );
+void main() {
+  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) => ValueListenableBuilder<ThemeMode>(
-    valueListenable: themeModeNotifier,
-    builder: (context, themeMode, _) => MaterialApp(
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _darkMode = false;
+
+  ThemeData _buildTheme(Brightness brightness) {
+    final colors = ColorScheme.fromSeed(
+      seedColor: Colors.green,
+      brightness: brightness,
+    );
+
+    return ThemeData(
+      useMaterial3: true,
+      brightness: brightness,
+      colorScheme: colors,
+      scaffoldBackgroundColor: colors.surface,
+      appBarTheme: AppBarTheme(
+        backgroundColor: colors.primary,
+        foregroundColor: colors.onPrimary,
+        centerTitle: true,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: colors.surfaceContainerHighest,
+        contentPadding: const EdgeInsets.all(16),
+        prefixIconColor: colors.primary,
+        suffixIconColor: colors.primary,
+        errorMaxLines: 3,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: colors.primary,
+          foregroundColor: colors.onPrimary,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 24,
+            vertical: 16,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: colors.primaryContainer,
+        foregroundColor: colors.onPrimaryContainer,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       title: 'EMSI Connect',
       debugShowCheckedModeBanner: false,
       theme: _buildTheme(Brightness.light),
       darkTheme: _buildTheme(Brightness.dark),
-      themeMode: themeMode,
-      // Bouton de bascule placé une seule fois ici, au-dessus de toutes les pages.
-      builder: (context, child) => Stack(
-        children: [
-          child!,
-          Positioned(
-            left: 8,
-            bottom: 8,
-            child: SafeArea(
-              child: Material(
-                color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                shape: const CircleBorder(),
-                elevation: 2,
-                child: const ThemeToggleButton(),
+      themeMode: _darkMode ? ThemeMode.dark : ThemeMode.light,
+      builder: (context, child) {
+        final colors = Theme.of(context).colorScheme;
+
+        return Column(
+          children: [
+            Material(
+              color: colors.surface,
+              child: SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Icon(
+                        _darkMode ? Icons.dark_mode : Icons.light_mode,
+                        color: colors.primary,
+                      ),
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Text('Mode sombre'),
+                      ),
+                      Switch(
+                        value: _darkMode,
+                        onChanged: (value) {
+                          setState(() {
+                            _darkMode = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ],
-      ),
+            Expanded(
+              child: child ?? const SizedBox.shrink(),
+            ),
+          ],
+        );
+      },
       home: const LoginPage(),
-    ),
-  );
+    );
+  }
 }

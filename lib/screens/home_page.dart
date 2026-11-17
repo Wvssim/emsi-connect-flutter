@@ -1,44 +1,48 @@
 import 'package:flutter/material.dart';
-
-import 'about_page.dart';
 import 'courses_page.dart';
-import 'login_page.dart';
 import 'profile_page.dart';
+import 'login_page.dart';
 import 'settings_page.dart';
+import 'about_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Couleurs lues dans le thème global (ColorScheme.fromSeed) : elles suivent
-    // la couleur de départ et le mode clair/sombre, sans valeur codée en dur.
     final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('EMSI Connect'),
+        backgroundColor: colors.primary,
+        foregroundColor: colors.onPrimary,
         centerTitle: true,
         actions: [
           IconButton(
             tooltip: 'Notifications',
-            onPressed: () => debugPrint('Notifications consultées'),
             icon: const Icon(Icons.notifications),
+            onPressed: () {
+              debugPrint('Notifications consultées');
+            },
           ),
           IconButton(
             tooltip: 'Aide',
-            onPressed: () => debugPrint('Aide consultée'),
             icon: const Icon(Icons.help_outline),
+            onPressed: () {
+              debugPrint('Aide consultée');
+            },
           ),
         ],
       ),
-      // Menu latéral (bonus) : hub de navigation vers les pages secondaires.
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: colors.primary),
+              decoration: BoxDecoration(
+                color: colors.primary,
+              ),
               accountName: Text(
                 'Étudiant EMSI',
                 style: TextStyle(color: colors.onPrimary),
@@ -49,14 +53,19 @@ class HomePage extends StatelessWidget {
               ),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: colors.onPrimary,
-                child: Icon(Icons.person, color: colors.primary),
+                child: Icon(
+                  Icons.person,
+                  color: colors.primary,
+                ),
               ),
             ),
             ListTile(
               leading: const Icon(Icons.home_outlined),
               title: const Text('Accueil'),
               selected: true,
-              onTap: () => Navigator.pop(context),
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
             ListTile(
               leading: const Icon(Icons.menu_book_outlined),
@@ -65,7 +74,9 @@ class HomePage extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CoursesPage()),
+                  MaterialPageRoute(
+                    builder: (context) => const CoursesPage(),
+                  ),
                 );
               },
             ),
@@ -76,7 +87,9 @@ class HomePage extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage()),
+                  MaterialPageRoute(
+                    builder: (context) => const ProfilePage(),
+                  ),
                 );
               },
             ),
@@ -88,7 +101,9 @@ class HomePage extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AboutPage()),
+                  MaterialPageRoute(
+                    builder: (context) => const AboutPage(),
+                  ),
                 );
               },
             ),
@@ -99,7 +114,9 @@ class HomePage extends StatelessWidget {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const SettingsPage()),
+                  MaterialPageRoute(
+                    builder: (context) => const SettingsPage(),
+                  ),
                 );
               },
             ),
@@ -108,9 +125,12 @@ class HomePage extends StatelessWidget {
               leading: const Icon(Icons.logout),
               title: const Text('Déconnexion'),
               onTap: () {
+                Navigator.pop(context);
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  MaterialPageRoute(
+                    builder: (context) => const LoginPage(),
+                  ),
                   (route) => false,
                 );
               },
@@ -118,70 +138,95 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 96),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Image.asset(
-                'assets/images/campus.jpg',
-                height: 160,
-                fit: BoxFit.cover,
+              Center(
+                child: Image.asset(
+                  'assets/images/emsi.jpg',
+                  width: 220,
+                  height: 120,
+                  fit: BoxFit.contain,
+                ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               Text(
                 'Bienvenue sur EMSI Connect',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: colors.primary,
                 ),
               ),
-              const SizedBox(height: 12),
-              const Text(
-                'Votre espace universitaire pour accéder à vos cours, votre planning et vos informations personnelles.',
+              const SizedBox(height: 8),
+              Text(
+                'Connectés pour réussir ensemble.',
                 textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontStyle: FontStyle.italic,
+                  color: colors.onSurfaceVariant,
+                ),
               ),
-              const SizedBox(height: 24),
-              // Partie 7 : grille de rubriques. 2 colonnes sur téléphone, 3 à partir de 600 px.
+              const SizedBox(height: 16),
+              const Text(
+                'Votre espace universitaire pour accéder à vos cours, '
+                'votre planning et vos informations personnelles.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 30),
               LayoutBuilder(
                 builder: (context, constraints) {
                   final columns = constraints.maxWidth < 600 ? 2 : 3;
+
                   return GridView.count(
                     crossAxisCount: columns,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    mainAxisSpacing: 12,
-                    crossAxisSpacing: 12,
+                    padding: EdgeInsets.zero,
                     children: [
-                      _RubriqueCard(
-                        icon: Icons.menu_book,
-                        label: 'Mes cours',
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CoursesPage(),
-                          ),
-                        ),
+                      _buildRubrique(
+                        context,
+                        Icons.menu_book,
+                        'Mes cours',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CoursesPage(),
+                            ),
+                          );
+                        },
                       ),
-                      const _RubriqueCard(
-                        icon: Icons.calendar_month,
-                        label: 'Planning',
+                      _buildRubrique(
+                        context,
+                        Icons.calendar_month,
+                        'Planning',
                       ),
-                      _RubriqueCard(
-                        icon: Icons.person,
-                        label: 'Mon profil',
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ProfilePage(),
-                          ),
-                        ),
+                      _buildRubrique(
+                        context,
+                        Icons.person,
+                        'Mon profil',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProfilePage(),
+                            ),
+                          );
+                        },
                       ),
-                      const _RubriqueCard(
-                        icon: Icons.task_alt,
-                        label: 'Mes tâches',
+                      _buildRubrique(
+                        context,
+                        Icons.task_alt,
+                        'Mes tâches',
                       ),
                     ],
                   );
@@ -192,38 +237,49 @@ class HomePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => debugPrint('Fonctionnalité bientôt disponible'),
+        tooltip: 'Ajouter',
+        onPressed: () {
+          debugPrint('Fonctionnalité bientôt disponible');
+        },
         child: const Icon(Icons.add),
       ),
     );
   }
-}
 
-class _RubriqueCard extends StatelessWidget {
-  const _RubriqueCard({required this.icon, required this.label, this.onTap});
-
-  final IconData icon;
-  final String label;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildRubrique(
+    BuildContext context,
+    IconData icone,
+    String libelle, {
+    VoidCallback? onTap,
+  }) {
     final colors = Theme.of(context).colorScheme;
+
     final carte = Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: colors.primaryContainer,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: colors.outlineVariant,
+        ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: colors.onPrimaryContainer),
+          Icon(
+            icone,
+            size: 36,
+            color: colors.onPrimaryContainer,
+          ),
           const SizedBox(height: 8),
           Text(
-            label,
+            libelle,
             textAlign: TextAlign.center,
-            style: TextStyle(color: colors.onPrimaryContainer),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: colors.onPrimaryContainer,
+            ),
           ),
         ],
       ),
@@ -233,6 +289,9 @@ class _RubriqueCard extends StatelessWidget {
       return carte;
     }
 
-    return GestureDetector(onTap: onTap, child: carte);
+    return GestureDetector(
+      onTap: onTap,
+      child: carte,
+    );
   }
 }
