@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'login_page.dart';
+
 class CoursesPage extends StatelessWidget {
   const CoursesPage({super.key});
 
@@ -33,7 +35,18 @@ class CoursesPage extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Mes cours')),
+      appBar: AppBar(
+        title: const Text('Mes cours'),
+        actions: [
+          IconButton(
+            tooltip: 'Connexion',
+            icon: const Icon(Icons.login),
+            onPressed: () =>
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => const LoginPage())),
+          ),
+        ],
+      ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: modules.length,
