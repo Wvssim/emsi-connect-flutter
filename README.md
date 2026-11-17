@@ -4,6 +4,13 @@ EMSI Connect est une application Flutter conçue pour centraliser les principaux
 
 L’application propose un parcours complet : connexion et inscription avec validation locale, puis un tableau de bord donnant accès aux cours, au planning, au profil, aux paramètres et à la page « à propos ».
 
+## Captures d'écran
+
+<p align="center">
+  <img src="screenshots/login.jpg" width="45%" alt="Écran de connexion">
+  <img src="screenshots/home.jpg" width="45%" alt="Écran d'accueil">
+</p>
+
 ## Fonctionnalités
 
 - Connexion et inscription avec validation locale des champs (email, mot de passe, téléphone).
